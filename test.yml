@@ -1,0 +1,45 @@
+---
+- name: VMware Object Creation
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vcenter_vars.yml
+  tasks:
+    - name: Create a datacenter "{{ datacenter }}"
+      vmware_datacenter:
+        validate_certs: no
+        hostname: "{{ vcenter_server }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter_name: "{{ datacenter }}"
+        state: present
+
+
+
+    - name: Create a cluster "{{ cluster }}"
+      vmware_cluster:
+        validate_certs: no
+        hostname: "{{ vcenter_server }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter_name: "{{ datacenter }}"
+        cluster_name: "{{ cluster }}"
+        enable_ha: no
+        enable_drs: yes
+        enable_vsan: no
+        state: present
+
+    - name: Add existing ESXi "{{ esxi_hostname }}"
+      vmware_host:
+        validate_certs: no
+        hostname: "{{ vcenter_server }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter_name: "{{ datacenter }}"
+        cluster_name: "{{ cluster }}"
+        esxi_hostname: "{{ esxi_hostname }}"
+        esxi_username: "{{ esxi_username }}"
+        esxi_password: "{{ esxi_password }}"
+        state: present
+      register: host_result
+ 

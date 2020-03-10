@@ -1,0 +1,25 @@
+
+- hosts: localhost 
+  connection: local
+  gather_facts: False
+ 
+
+  tasks:
+    - name: create the instance
+      vmware_guest:
+        validate_certs: no
+        hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+        username: "{{ lookup('env', 'VMWARE_USER') }}"
+        password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+        name: "{{ prefix }}"
+        wait_for_ip_address: yes
+        template: "{{ vmware_template }}"
+        folder: "{{ folder }}"
+        datacenter: "{{ datacenter }}"
+        
+      
+        disk:
+            - size_gb: "{{ disk_size }}"
+              type: thin
+              datastore: "{{ datastore }}"
+    

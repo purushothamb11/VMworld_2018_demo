@@ -1,0 +1,19 @@
+- hosts: localhost 
+  connection: local
+  gather_facts: False
+ 
+
+  tasks:
+    - name: power off instance before deleting
+      vmware_guest:
+        validate_certs: no
+        name: "{{ prefix }}"
+        state: poweredoff
+        
+        
+    - name: delete instance
+      vmware_guest:
+        validate_certs: no
+        name: "{{ prefix }}"
+        state: absent
+        
